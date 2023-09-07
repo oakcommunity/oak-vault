@@ -2,12 +2,22 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="67188774-7045-4e49-a0ed-55adf9508184" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/../oakvault-app/.env.local" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../oakvault-app/src/abi/OakVaultABI.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../oakvault-app/src/components/client/ApproveButton.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../oakvault-app/src/components/client/ContractInfo.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../oakvault-app/src/components/client/DepositUsdcForm.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../oakvault-app/src/components/client/DespositOakForm.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../oakvault-app/src/components/client/Swap.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../oakvault-app/src/hooks/useOakVault.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../oakvault-app/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../oakvault-app/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../oakvault-app/pnpm-lock.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/../oakvault-app/pnpm-lock.yaml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../oakvault-app/src/app/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../oakvault-app/src/app/page.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../oakvault-app/src/components/client/Header.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../oakvault-app/src/components/client/Header.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../oakvault-app/src/components/server/Caisson.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../oakvault-app/src/components/server/Caisson.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../oakvault-app/src/wagmi.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../oakvault-app/src/wagmi.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/OakVault.sol" beforeDir="false" afterPath="$PROJECT_DIR$/src/OakVault.sol" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -33,7 +43,8 @@
     "WebServerToolWindowFactoryState": "false",
     "last_opened_file_path": "/Users/taayyohh/dev/oakvault",
     "nodejs_package_manager_path": "pnpm",
-    "prettierjs.PrettierConfiguration.Package": "/Users/taayyohh/dev/oakvault/node_modules/prettier",
+    "prettierjs.PrettierConfiguration.Package": "/Users/taayyohh/dev/oakvault-app/node_modules/prettier",
+    "settings.editor.selected.configurable": "settings.javascript.prettier",
     "ts.external.directory.path": "/Users/taayyohh/dev/oakvault-app/node_modules/typescript/lib",
     "vue.rearranger.settings.migration": "true"
   }
@@ -46,7 +57,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1694047937988</updated>
-      <workItem from="1694047939157" duration="17595000" />
+      <workItem from="1694047939157" duration="34385000" />
     </task>
     <servers />
   </component>

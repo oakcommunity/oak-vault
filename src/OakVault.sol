@@ -22,11 +22,12 @@ contract OakVault is Initializable, PausableUpgradeable, OwnableUpgradeable, Ree
     mapping(address => uint256) public lastSwapTime;
 
     // Constants
-    uint256 public constant SWAP_LIMIT = 10 * 10**6; // 10 USDC
+    uint256 public constant SWAP_LIMIT = 100 * 10**6; // 100 USDC
     uint256 public constant TIME_LIMIT = 1 days;
+    uint256 public constant REVERSE_SWAP_TAX = 5;
 
     // Custom errors
-    error InsufficientTokenBalance();
+    error InsufficientOakBalance();
     error InsufficientUSDCBalance();
     error ExceedsSwapLimit();
     error SwapCooldown();
@@ -38,6 +39,7 @@ contract OakVault is Initializable, PausableUpgradeable, OwnableUpgradeable, Ree
     event SwappedOakForUSDC(address indexed user, uint256 amount, uint256 surcharge);
     event USDCWithdrawn(address indexed owner, uint256 amount);
     event USDCDeposited(address indexed owner, uint256 amount);
+    event OakWithdrawn(address indexed owner, uint256 amount);
     event OakDeposited(address indexed owner, uint256 amount);
 
 
@@ -84,7 +86,7 @@ contract OakVault is Initializable, PausableUpgradeable, OwnableUpgradeable, Ree
      * @param amount The amount of USDC to swap.
      */
     function swapUSDCForOak(uint256 amount) external canSwap(msg.sender, amount) whenNotPaused nonReentrant {
-        if (oakToken.balanceOf(address(this)) < amount) revert InsufficientTokenBalance();
+        if (oakToken.balanceOf(address(this)) < amount) revert InsufficientOakBalance();
 
         // Transfer USDC from user to contract
         usdcToken.safeTransferFrom(msg.sender, address(this), amount);
@@ -103,7 +105,7 @@ contract OakVault is Initializable, PausableUpgradeable, OwnableUpgradeable, Ree
      * @param amount The amount of $OAK to swap.
      */
     function swapOakForUSDC(uint256 amount) external whenNotPaused nonReentrant {
-        uint256 surcharge = (amount * 5) / 100; // 5% surcharge
+        uint256 surcharge = (amount * REVERSE_SWAP_TAX) / 100; // 5% surcharge
         uint256 netAmount = amount - surcharge;
 
         if (usdcToken.balanceOf(address(this)) < netAmount) revert InsufficientUSDCBalance();
@@ -127,6 +129,18 @@ contract OakVault is Initializable, PausableUpgradeable, OwnableUpgradeable, Ree
         usdcToken.transfer(msg.sender, amount);
 
         emit USDCWithdrawn(msg.sender, amount);
+    }
+
+    /**
+     * @notice Allows the owner to withdraw OAK from the contract.
+     * @param amount The amount of OAK to withdraw.
+     */
+    function withdrawOak(uint256 amount) external onlyOwner {
+        if (oakToken.balanceOf(address(this)) < amount) revert InsufficientOakBalance();
+
+        oakToken.transfer(msg.sender, amount);
+
+        emit OakWithdrawn(msg.sender, amount);
     }
 
     /**

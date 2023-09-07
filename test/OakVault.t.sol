@@ -86,7 +86,7 @@ contract OakVaultTest is Test {
     function testFail_SwapUSDCAboveLimit() public {
         resetAliceBalances();
 
-        uint256 amount = 11 * 10**6; // 11 USDC, which is above the limit
+        uint256 amount = 101 * 10**6; // 11 USDC, which is above the limit
 
         // Prank as alice
         vm.startPrank(alice);
