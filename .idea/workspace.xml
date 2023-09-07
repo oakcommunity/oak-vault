@@ -6,10 +6,8 @@
       <change beforePath="$PROJECT_DIR$/../oakvault-app/src/app/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../oakvault-app/src/app/page.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../oakvault-app/src/components/client/Header.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../oakvault-app/src/components/client/Header.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../oakvault-app/src/components/server/Caisson.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../oakvault-app/src/components/server/Caisson.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/remappings.txt" beforeDir="false" afterPath="$PROJECT_DIR$/remappings.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/OakVault.sol" beforeDir="false" afterPath="$PROJECT_DIR$/src/OakVault.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/OakVaultProxyDeployer.sol" beforeDir="false" afterPath="$PROJECT_DIR$/src/OakVaultProxyDeployer.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/OakVault.t.sol" beforeDir="false" afterPath="$PROJECT_DIR$/test/OakVault.t.sol" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -48,7 +46,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1694047937988</updated>
-      <workItem from="1694047939157" duration="17561000" />
+      <workItem from="1694047939157" duration="17595000" />
     </task>
     <servers />
   </component>
