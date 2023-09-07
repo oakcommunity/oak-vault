@@ -61,7 +61,7 @@ contract OakVault is Initializable, PausableUpgradeable, OwnableUpgradeable, Ree
      */
     modifier canSwap(address user, uint256 amount) {
         if (amount > SWAP_LIMIT) revert ExceedsSwapLimit();
-        if (block.timestamp - lastSwapTime[user] < TIME_LIMIT) revert SwapCooldown();
+        if (lastSwapTime[user] != 0 && block.timestamp - lastSwapTime[user] < TIME_LIMIT) revert SwapCooldown();
         _;
     }
 

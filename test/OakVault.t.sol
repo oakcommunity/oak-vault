@@ -2,10 +2,9 @@ pragma solidity 0.8.10;
 
 import "forge-std/Test.sol";
 import { IERC20Upgradeable } from "openzeppelin-contracts-upgradeable/contracts/token/ERC20/IERC20Upgradeable.sol";
-import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
-
 import { OakVault } from "../src/OakVault.sol";
-
+import "./mock/MockERC20.sol";
+import "./utils/Utils.sol";
 
 interface IUSDC {
     function masterMinter() external view returns (address);
@@ -15,37 +14,40 @@ interface IUSDC {
 
 contract OakVaultTest is Test {
     OakVault oakVault;
-    IERC20Upgradeable oakToken;
-    IERC20Upgradeable usdcToken;
+    MockERC20 oakToken;
+    MockERC20 usdcToken;
+    Utils utils;
 
     address deployer;
-    address user1;
-    address user2;
+    address payable alice;
 
     function setUp() public {
         deployer = address(this); // The test contract is the deployer
-        user1 = address(0x123); // Replace with actual test address
-        user2 = address(0x456); // Replace with actual test address
+        utils = new Utils();
 
-        oakToken = IERC20Upgradeable(address(0xabc)); // Mock or actual token address
-        usdcToken = IERC20Upgradeable(address(0xdef)); // Mock or actual token address
+        // Create test users using the Utils contract
+        address payable[] memory users = utils.createUsers(2);
+        alice = users[0];
 
-        // Prank as user1 to deploy the contract
-        vm.startPrank(user1);
+        // Initialize mock tokens with name, symbol, and initial supply
+        oakToken = new MockERC20("Mock OAK", "mOAK", 10000 * 10**6);
+        usdcToken = new MockERC20("Mock USDC", "mUSDC", 10000 * 10**6);
+
+        // Alice deploys the OakVault contract
+        vm.startPrank(alice);
         oakVault = new OakVault();
         oakVault.initialize(address(oakToken), address(usdcToken));
+    }
 
-        // Mint USDC and OAK tokens to user1
-        IUSDC(address(usdcToken)).mint(user1, 10000e18);
-        IUSDC(address(oakToken)).mint(user1, 10000e18); // Assuming OAK token has a similar mint function
+    function resetAliceBalances() internal {
+        oakToken.mint(alice, 1000 * 10**6);
+        usdcToken.mint(alice, 1000 * 10**6);
 
-        // User1 approves the OakVault contract to spend tokens
-        oakToken.approve(address(oakVault), 10000e18);
-        usdcToken.approve(address(oakVault), 10000e18);
-//
-//        // User1 deposits USDC and OAK tokens into the contract
-//        oakVault.depositUSDC(user1, 10000e18);
-        oakVault.depositOak(user1, 10000e18);
+        oakToken.approve(address(oakVault), 1000 * 10**6);
+        usdcToken.approve(address(oakVault), 1000 * 10**6);
+
+        oakVault.depositOak(address(oakToken), 100 * 10**6);
+        oakVault.depositUSDC(address(usdcToken), 100 * 10**6);
     }
 
     function test_InitializeOakVault() public {
@@ -54,76 +56,65 @@ contract OakVaultTest is Test {
     }
 
     function test_SwapUSDCForOak() public {
+        resetAliceBalances();
+
         uint256 amount = 5 * 10**6; // 5 USDC
 
-        // Deal USDC to user1
-        deal(address(usdcToken), user1, amount);
-
-        // Prank as user1
-        vm.startPrank(user1);
-
+        // Prank as alice
+        vm.startPrank(alice);
         oakVault.swapUSDCForOak(amount);
 
-        // Check the balances and lastSwapTime
-        assertEq(usdcToken.balanceOf(address(oakVault)), amount);
-        assertEq(oakToken.balanceOf(user1), amount);
-        assertEq(oakVault.lastSwapTime(user1), block.timestamp);
+        assertEq(usdcToken.balanceOf(alice), 895 * 10**6);
+        assertEq(oakToken.balanceOf(alice), 905 * 10**6);
     }
 
     function testFail_SwapUSDCAboveLimit() public {
+        resetAliceBalances();
+
         uint256 amount = 11 * 10**6; // 11 USDC, which is above the limit
 
-        // Deal USDC to user1
-        deal(address(usdcToken), user1, amount);
-
-        // Prank as user1
-        vm.startPrank(user1);
-
+        // Prank as alice
+        vm.startPrank(alice);
         oakVault.swapUSDCForOak(amount);
     }
 
+    function testFail_WithdrawUSDCByNonOwner() public {
+        resetAliceBalances();
+
+        uint256 amount = 5 * 10**6; // 5 USDC
+
+        // Prank as deployer (since deployer is not the owner)
+        vm.startPrank(deployer);
+        oakVault.withdrawUSDC(amount);
+    }
+
     function test_SwapOakForUSDC() public {
+        resetAliceBalances();
+
         uint256 amount = 5 * 10**6; // 5 OAK
         uint256 surcharge = (amount * 5) / 100; // 5% surcharge
-        uint256 netAmount = amount - surcharge;
 
-        // Deal OAK to user2
-        deal(address(oakToken), user2, amount);
+        // Ensure Alice has enough OAK tokens and has approved the contract
+        oakToken.mint(alice, amount);
+        oakToken.approve(address(oakVault), amount);
 
-        // Prank as user2
-        vm.startPrank(user2);
-
+        // Prank as alice
+        vm.startPrank(alice);
         oakVault.swapOakForUSDC(amount);
 
-        // Check the balances
-        assertEq(oakToken.balanceOf(address(oakVault)), amount);
-        assertEq(usdcToken.balanceOf(user2), netAmount);
+        assertEq(oakToken.balanceOf(alice), 900 * 10**6);
+        assertEq(usdcToken.balanceOf(alice), 904.75 * 10**6);
     }
 
     function test_WithdrawUSDCByOwner() public {
+        resetAliceBalances();
+
         uint256 amount = 5 * 10**6; // 5 USDC
 
-        // Deal USDC to the contract
-        deal(address(usdcToken), address(oakVault), amount);
-
-        // Prank as deployer
-        vm.startPrank(deployer);
-
+        // Prank as alice (since she's the owner)
+        vm.startPrank(alice);
         oakVault.withdrawUSDC(amount);
 
-        // Check the balance
-        assertEq(usdcToken.balanceOf(deployer), amount);
-    }
-
-    function testFail_WithdrawUSDCByNonOwner() public {
-        uint256 amount = 5 * 10**6; // 5 USDC
-
-        // Deal USDC to the contract
-        deal(address(usdcToken), address(oakVault), amount);
-
-        // Prank as user1
-        vm.startPrank(user1);
-
-        oakVault.withdrawUSDC(amount);
+        assertEq(usdcToken.balanceOf(alice), 905 * 10**6);
     }
 }
