@@ -5,12 +5,7 @@ import { IERC20Upgradeable } from "openzeppelin-contracts-upgradeable/contracts/
 import { OakVault } from "../src/OakVault.sol";
 import "./mock/MockERC20.sol";
 import "./utils/Utils.sol";
-
-interface IUSDC {
-    function masterMinter() external view returns (address);
-    function configureMinter(address minter, uint256 minterAllowedAmount) external;
-    function mint(address account, uint256 amount) external;
-}
+import { OakVaultProxyDeployer } from "../src/OakVaultProxyDeployer.sol";
 
 contract OakVaultTest is Test {
     OakVault oakVault;
@@ -33,11 +28,31 @@ contract OakVaultTest is Test {
         oakToken = new MockERC20("Mock OAK", "mOAK", 10000 * 10**6);
         usdcToken = new MockERC20("Mock USDC", "mUSDC", 10000 * 10**6);
 
-        // Alice deploys the OakVault contract
+        assert(address(oakToken) != address(0));
+        assert(address(usdcToken) != address(0));
+
+        // Deploy the OakVault implementation contract
+        OakVault oakVaultImplementation = new OakVault();
+        assert(address(oakVaultImplementation) != address(0));
+
+        // Alice deploys the OakVault contract using the proxy deployer
         vm.startPrank(alice);
-        oakVault = new OakVault();
-        oakVault.initialize(address(oakToken), address(usdcToken));
+        OakVaultProxyDeployer deployerContract = new OakVaultProxyDeployer(address(oakVaultImplementation), address(oakToken), address(usdcToken));
+        assert(address(deployerContract) != address(0));
+
+        // Capture the proxy address from the OakVaultDeployed event
+        address oakVaultProxyAddress = deployerContract.oakVaultProxy();
+        oakVault = OakVault(oakVaultProxyAddress);
+
+        // Ensure that the OakVault contract is correctly initialized
+        assertEq(address(oakVault.oakToken()), address(oakToken));
+        assertEq(address(oakVault.usdcToken()), address(usdcToken));
+
+        // Ensure that alice is the owner of the OakVault contract
+        assertEq(oakVault.owner(), alice);
     }
+
+
 
     function resetAliceBalances() internal {
         oakToken.mint(alice, 1000 * 10**6);
@@ -92,7 +107,6 @@ contract OakVaultTest is Test {
         resetAliceBalances();
 
         uint256 amount = 5 * 10**6; // 5 OAK
-        uint256 surcharge = (amount * 5) / 100; // 5% surcharge
 
         // Ensure Alice has enough OAK tokens and has approved the contract
         oakToken.mint(alice, amount);

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="67188774-7045-4e49-a0ed-55adf9508184" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/../oakvault-app/pnpm-lock.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/../oakvault-app/pnpm-lock.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../oakvault-app/src/app/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../oakvault-app/src/app/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../oakvault-app/src/components/client/Header.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../oakvault-app/src/components/client/Header.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../oakvault-app/src/components/server/Caisson.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../oakvault-app/src/components/server/Caisson.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/remappings.txt" beforeDir="false" afterPath="$PROJECT_DIR$/remappings.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/OakVault.sol" beforeDir="false" afterPath="$PROJECT_DIR$/src/OakVault.sol" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/OakVaultProxyDeployer.sol" beforeDir="false" afterPath="$PROJECT_DIR$/src/OakVaultProxyDeployer.sol" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/OakVault.t.sol" beforeDir="false" afterPath="$PROJECT_DIR$/test/OakVault.t.sol" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="2V2xNclwxqKJWJMU25jkYVtu8KI" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "/Users/taayyohh/dev/oakvault",
+    "nodejs_package_manager_path": "pnpm",
+    "prettierjs.PrettierConfiguration.Package": "/Users/taayyohh/dev/oakvault/node_modules/prettier",
+    "ts.external.directory.path": "/Users/taayyohh/dev/oakvault-app/node_modules/typescript/lib",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="67188774-7045-4e49-a0ed-55adf9508184" name="Changes" comment="" />
+      <created>1694047937988</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1694047937988</updated>
+      <workItem from="1694047939157" duration="17561000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>

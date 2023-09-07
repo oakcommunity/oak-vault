@@ -47,12 +47,26 @@ contract OakVault is Initializable, PausableUpgradeable, OwnableUpgradeable, Ree
      * @param _usdcToken The address of the USDC token.
      */
     function initialize(address _oakToken, address _usdcToken) public initializer {
-        oakToken = IERC20Upgradeable(_oakToken);
-        usdcToken = IERC20Upgradeable(_usdcToken);
-
         __Pausable_init();
         __Ownable_init();
+
+        oakToken = IERC20Upgradeable(_oakToken);
+        usdcToken = IERC20Upgradeable(_usdcToken);
     }
+
+
+    /**
+     * @notice Transfers ownership of the contract to a new account (`newOwner`).
+     * Can only be called by the current owner.
+     * @dev Overrides the transferOwnership function from OwnableUpgradeable for custom logic.
+     * @param newOwner Address of the new owner. Must not be the zero address.
+     */
+    function transferOwnership(address newOwner) public override onlyOwner {
+        require(newOwner != address(0), "New owner is the zero address");
+        super.transferOwnership(newOwner);
+    }
+
+
 
     /**
      * @notice Modifier to check if a user can perform a swap.
