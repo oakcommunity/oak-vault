@@ -16,6 +16,8 @@ contract OakVaultTest is Test {
     address deployer;
     address payable alice;
 
+    error SwapCooldown();
+
     function setUp() public {
         deployer = address(this); // The test contract is the deployer
         utils = new Utils();
@@ -131,4 +133,48 @@ contract OakVaultTest is Test {
 
         assertEq(usdcToken.balanceOf(alice), 905 * 10**6);
     }
+
+    function test_SwapUSDCForOakCooldown() public {
+        resetAliceBalances();
+        uint256 amount = 5 * 10**6; // 5 USDC
+        uint256 timeSkip = 24 * 60 * 60 + 1; //  24 Hours and 1 second
+
+        // Prank as alice
+        vm.startPrank(alice);
+        oakVault.swapUSDCForOak(amount);
+        assertEq(usdcToken.balanceOf(alice), 895 * 10**6);
+        assertEq(oakToken.balanceOf(alice), 905 * 10**6);
+
+        // Skip block.timestamp ahead
+        vm.warp(timeSkip);
+
+        // Second Swap should Pass.
+        oakVault.swapUSDCForOak(amount);
+        assertEq(usdcToken.balanceOf(alice), 890 * 10**6);
+        assertEq(oakToken.balanceOf(alice), 910 * 10**6);
+        
+    }
+
+    function test_SwapUSDCForOakDuringCooldownFails() public {
+        resetAliceBalances();
+        uint256 amount = 5 * 10**6; // 5 USDC
+        uint256 cooldown = 24* 60 * 60; //  12 hours
+
+        // Prank as alice
+        vm.startPrank(alice);
+        oakVault.swapUSDCForOak(amount);
+        assertEq(usdcToken.balanceOf(alice), 895 * 10**6);
+        assertEq(oakToken.balanceOf(alice), 905 * 10**6);
+
+        for (uint256 i = 0;  i < cooldown; i++) {
+            vm.warp(i);
+            vm.expectRevert();
+            oakVault.swapUSDCForOak(amount);
+        }
+        
+    }
+
+    
+    
+    
 }
