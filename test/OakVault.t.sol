@@ -16,7 +16,6 @@ contract OakVaultTest is Test {
     address deployer;
     address payable alice;
 
-    error SwapCooldown();
 
     function setUp() public {
         deployer = address(this); // The test contract is the deployer
@@ -137,8 +136,8 @@ contract OakVaultTest is Test {
     function test_SwapUSDCForOakCooldown() public {
         resetAliceBalances();
         uint256 amount = 5 * 10**6; // 5 USDC
-        uint256 timeSkip = 24 * 60 * 60 + 1; //  24 Hours and 1 second
-        console.log("this is a show that console.log works.");
+        uint256 timeSkip = 24 * 60 ** 2; //  24 Hours
+        
 
         // Prank as alice
         vm.startPrank(alice);
@@ -146,9 +145,14 @@ contract OakVaultTest is Test {
         assertEq(usdcToken.balanceOf(alice), 895 * 10**6);
         assertEq(oakToken.balanceOf(alice), 905 * 10**6);
 
-        // Skip block.timestamp ahead
+        // Skip block.timestamp ahead 24 hours
         vm.warp(timeSkip);
 
+        // Expect Revert because 24 hours exact is not greater than limit
+        vm.expectRevert();
+        oakVault.swapUSDCForOak(amount);
+
+        vm.warp( timeSkip + 1);
         // Second Swap should Pass.
         oakVault.swapUSDCForOak(amount);
         assertEq(usdcToken.balanceOf(alice), 890 * 10**6);
@@ -164,10 +168,11 @@ contract OakVaultTest is Test {
         // Prank as alice
         vm.startPrank(alice);
         oakVault.swapUSDCForOak(amount);
+        console.log('block.timestamp for initial transaction:',oakVault.lastSwapTime(alice));
         assertEq(usdcToken.balanceOf(alice), 895 * 10**6);
         assertEq(oakToken.balanceOf(alice), 905 * 10**6);
 
-        for (uint256 i = 0;  i < cooldown; i++) {
+        for (uint256 i = 1;  i < cooldown; i++) {
             vm.warp(i);
             vm.expectRevert();
             oakVault.swapUSDCForOak(amount);
