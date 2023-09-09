@@ -138,6 +138,7 @@ contract OakVaultTest is Test {
         resetAliceBalances();
         uint256 amount = 5 * 10**6; // 5 USDC
         uint256 timeSkip = 24 * 60 * 60 + 1; //  24 Hours and 1 second
+        console.log("this is a show that console.log works.");
 
         // Prank as alice
         vm.startPrank(alice);
